@@ -1,73 +1,53 @@
-# Allpass Waffle Bot
+# Audio to Summary
 
-Allpass Waffle Bot is a Discord bot designed to help manage courses and notes within a Discord server. It includes features such as creating and deleting course categories, handling notes, and interacting with users through buttons.
-
-## Features
-
-- **Course Management**: Add and delete course categories with predefined channels.
-- **Note Classification**: Automatically classify notes into the correct channels based on keywords.
-- **Interactive Buttons**: Use buttons for user interactions.
+## Introduction
+This application converts audio files into text summaries. It uses advanced speech recognition and natural language processing techniques to provide concise summaries of audio content.
 
 ## Installation
-
 1. Clone the repository:
     ```sh
-    git clone https://github.com/yourusername/allpass-waffle.git
-    cd allpass-waffle
+    git clone https://github.com/yourusername/audio-to-summary.git
     ```
-
-2. Create and activate a virtual environment:
+2. Navigate to the project directory:
     ```sh
-    python -m venv env
-    source env/bin/activate  # On Windows use `env\Scripts\activate`
+    cd audio-to-summary
     ```
-
-3. Install the required packages:
+3. Install the required dependencies:
     ```sh
-    pip install -r requirements.txt
-    ```
-
-4. Create a [.env](http://_vscodecontentref_/1) file based on the [.env.example](http://_vscodecontentref_/2) and fill in your Discord bot token and NAS credentials:
-    ```sh
-    cp .env.example .env
+    npm install
     ```
 
 ## Usage
-
-1. Run the bot:
+1. Place your audio files in the `input` directory.
+2. Run the application:
     ```sh
-    python allpass-waffle/bot.py
+    npm start
     ```
+3. The summaries will be generated and saved in the `output` directory.
 
-2. Use the following commands in your Discord server:
-    - `$load <extension>`: Load a specific cog.
-    - `$unload <extension>`: Unload a specific cog.
-    - `$reload <extension>`: Reload a specific cog.
-    - `/add_category <category_name>`: Add a new course category.
-    - `/delete_category <category_name>`: Delete an existing course category.
-
-## Docker
-
-You can also run the bot using Docker:
-
-1. Build the Docker image:
-    ```sh
-    docker build -t allpass-waffle-bot .
-    ```
-
-2. Run the Docker container:
-    ```sh
-    docker run --env-file .env allpass-waffle-bot
-    ```
+## Configuration
+You can configure the application by editing the `config.json` file. The following options are available:
+- `language`: The language of the audio files (default: `en`).
+- `summaryLength`: The desired length of the summary (default: `short`).
 
 ## Contributing
-
 1. Fork the repository.
-2. Create a new branch (`git checkout -b feature-branch`).
-3. Commit your changes (`git commit -am 'Add new feature'`).
-4. Push to the branch (`git push origin feature-branch`).
-5. Create a new Pull Request.
+2. Create a new branch:
+    ```sh
+    git checkout -b feature-branch
+    ```
+3. Make your changes and commit them:
+    ```sh
+    git commit -m "Description of changes"
+    ```
+4. Push to the branch:
+    ```sh
+    git push origin feature-branch
+    ```
+5. Create a pull request.
 
 ## License
+This project is licensed under the MIT License. See the `LICENSE` file for details.
 
-This project is licensed under the MIT License - see the [LICENSE](http://_vscodecontentref_/3) file for details.
+## Contact
+For any questions or suggestions, please open an issue or contact the maintainer at [your-email@example.com].
