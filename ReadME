@@ -1,0 +1,73 @@
+<body>
+    <header>
+        <div class="container">
+            <div id="branding">
+                <h1>Audio to Summary</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#introduction">Introduction</a></li>
+                    <li><a href="#installation">Installation</a></li>
+                    <li><a href="#usage">Usage</a></li>
+                    <li><a href="#troubleshooting">Troubleshooting</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <section id="introduction">
+            <h2>Introduction</h2>
+            <p>Welcome to the Audio to Summary project. This tool allows you to convert audio from video files into text summaries using advanced speech recognition technologies.</p>
+        </section>
+
+        <section id="installation">
+            <h2>Installation</h2>
+            <p>Follow these steps to install the necessary dependencies and set up the project:</p>
+            <ol>
+                <li>Clone the repository:
+                    <pre><code>git clone https://github.com/yourusername/audio-to-summary.git</code></pre>
+                </li>
+                <li>Navigate to the project directory:
+                    <pre><code>cd audio-to-summary</code></pre>
+                </li>
+                <li>Install the required Python packages:
+                    <pre><code>pip install -r requirements.txt</code></pre>
+                </li>
+                <li>Ensure you have FFMPEG installed and added to your system PATH.</li>
+            </ol>
+        </section>
+
+        <section id="usage">
+            <h2>Usage</h2>
+            <p>To use the tool, follow these steps:</p>
+            <ol>
+                <li>Place your MP4 video file in the project directory.</li>
+                <li>Run the script to extract audio and convert it to text:
+                    <pre><code>python main.py path_to_your_video_file.mp4</code></pre>
+                </li>
+                <li>The transcribed text will be displayed in the console.</li>
+            </ol>
+        </section>
+
+        <section id="troubleshooting">
+            <h2>Troubleshooting</h2>
+            <p>If you encounter any issues, consider the following solutions:</p>
+            <ul>
+                <li>Ensure that FFMPEG is installed and added to your system PATH.</li>
+                <li>Check your internet connection if you are using online speech recognition services.</li>
+                <li>Verify that the video file is not corrupted and is accessible.</li>
+            </ul>
+        </section>
+
+        <section id="contact">
+            <h2>Contact</h2>
+            <p>If you have any questions or need further assistance, please contact us at <a href="mailto:support@audio-to-summary.com">support@audio-to-summary.com</a>.</p>
+        </section>
+    </div>
+
+    <footer>
+        <p>Audio to Summary &copy; 2023</p>
+    </footer>
+</body>
