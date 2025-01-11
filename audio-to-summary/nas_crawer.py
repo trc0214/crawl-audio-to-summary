@@ -51,6 +51,9 @@ def download_file(url, download_dir, filename):
         response = requests.get(url, stream=True)
         response.raise_for_status()  
 
+        if not os.path.exists(download_dir):
+            os.makedirs(download_dir)
+        
         with open(f"{download_dir}/{filename}", 'wb') as f:
             for chunk in response.iter_content(chunk_size=8192): 
                 f.write(chunk)
