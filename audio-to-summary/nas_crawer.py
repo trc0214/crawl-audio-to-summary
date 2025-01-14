@@ -75,57 +75,130 @@ if __name__ == "__main__":
     freshman_requirements = {
         "python_folder": {
             "folder_name": "1.%2520Python%252F",
-            "dates": {'1130310', '1130312', '1130314', '1130317', '1130321', '1130319', '1130305', '1130307'},
-            "defult_lesson": 6,
+            "video_id": {
+                "Aia6": {
+                    "113": {
+                        "03": {"05": {"1"}}
+                    }
+                },
+                "aiA6": {
+                    "113": {
+                        "03": {"05": {"2","3","4","5","6"},
+                                "07": {"1","2","3","4","5","6"},
+                                "10": {"1","2","3","4","5","6"},
+                                "12": {"1","2","3","4","5","6"},
+                                "14": {"1","2","3","4","5","6"},
+                                "17": {"1","2","3","4","5"},
+                                "19": {"1","2","3","4","5"},
+                                "21": {"1","2","3","4","5","6"},
+                                }
+                    }
+                }
+            },
             "download_dir": "nas-download\\python",
         },
         "numpy_folder": {
             "folder_name": "2.%2520Numpy%252F",
-            "dates": {"1130324", "1130326", "1130402"}, 
-            "defult_lesson": 6,
+            "video_id": {
+                "aiA6": {
+                    "113": {
+                        "03": {
+                                "24": {"1","2","3","4","5","6"},
+                                "26": {"1","2","3","4","5","6"},
+                            },
+                        "04": {"02": {"1","2","3","4","5","6"},}
+                    }
+                }
+            },
             "download_dir": "nas-download\\numpy",
         },
         "powerbi_folder": {
             "folder_name": "3.%2520PowerBI%252F",
-            "dates": {"1130328", "1130331"},
-            "defult_lesson": 6,
+            "video_id": {
+                "aiA6": {
+                    "113": {
+                        "03": {
+                                "28": {"1","2","3","4","5","6"},
+                                "31": {"1","2","3","4","5","6"},
+                            },
+                    }
+                }
+            },
             "download_dir": "nas-download\\powerbi",
         },
         "machine_learning_folder": {
             "folder_name": "4.%2520%25E6%25A9%259F%25E5%2599%25A8%25E5%25AD%25B8%25E7%25BF%2592%252F",
-            "dates": {"1130409", "1130411"},
-            "defult_lesson": 6,
+            "video_id": {
+                "aiA6": {
+                    "113": {
+                        "04": {
+                                "09": {"1","2","3","4","5","6"},
+                                "11": {"1","2","3","4","5","6"},
+                            },
+                    }
+                }
+            },
             "download_dir": "nas-download\\machine-learning",
         },
         "deep_learning_folder": {
             "folder_name": "5.%2520%25E6%25B7%25B1%25E5%25BA%25A6%25E5%25AD%25B8%25E7%25BF%2592%252F",
-            "dates": {"1130414", "1130416", "1130421", "1130423", "1130428", "1130430"},
-            "defult_lesson": 6,
+            "video_id": {
+                "Aia6": {
+                    "113": {
+                        "04": {
+                            "16": {"1","2","3","4","5","6","7"},
+                            "23": {"1","2","3","4","5","6","7"},
+                            "28": {"1","2","3","4","5","6","7"},
+                        }
+                    }
+                },
+                "aiA6": {
+                    "113": {
+                        "04": {"14": {"1","2","3","4","5","6"},
+                                "21": {"1","2","3","4","5","6"},
+                                "30": {"1","2","3","4","5","6"},
+                                }
+                    }
+                }
+            },
             "download_dir": "nas-download\\deep-learning",
         },
         "chatgpt_folder": {
             "folder_name": "6.%2520ChatGPT%25E6%2587%2589%25E7%2594%25A8%252F",
-            "dates": {"1130502", "1130505", "1130507", "1130509"},
-            "defult_lesson": 6,
+            "video_id": {
+                "aiA6": {
+                    "113": {
+                        "05": {
+                            "02": {"1", "2", "3", "4", "5", "6"},
+                            "05": {"1", "2", "3", "4", "5"},
+                            "07": {"1", "2", "3", "4", "5", "6"},
+                            "09": {"1", "2", "3", "4", "5"},
+                        },
+                    }
+                }
+            },
             "download_dir": "nas-download\\chatgpt",
         },
     }
 
     for folder in freshman_requirements.values():
-            for date in folder["dates"]:
-                for lesson in range(1, folder["defult_lesson"]):
-                    video_id = f"aiA6_{date}_{lesson}"
-                    filename = f"{video_id}.mp4"
-                    file_path = os.path.join(folder["download_dir"], filename)
-                    
-                    if os.path.exists(file_path):
-                        print(f"File {filename} already exists. Skipping download.")
-                        continue
-                    
-                    print(f"Downloading {video_id}")
-                    video_url = video_base_url+ folder["folder_name"] + video_id + ".mp4"
-                    direct_url = get_direct_url(driver, video_url, "_html5_video_player")
-                    if direct_url:
-                        download_file(direct_url, folder["download_dir"], filename)
-                        time.sleep(15)
+        for prefix, years in folder["video_id"].items():
+            for year, months in years.items():
+                for month, days in months.items():
+                    for day, lessons in days.items():
+                        for lesson in lessons:
+                            video_id = f"{prefix}_{year}{month}{day}_{lesson}"
+                            filename = f"{video_id}.mp4"
+                            file_path = os.path.join(folder["download_dir"], filename)
+                            
+                            if os.path.exists(file_path):
+                                print(f"File {filename} already exists. Skipping download.")
+                                continue
+                            
+                            print(f"Downloading {video_id}")
+                            video_url = video_base_url + folder["folder_name"] + video_id + ".mp4"
+                            direct_url = get_direct_url(driver, video_url, "_html5_video_player")
+                            if direct_url:
+                                download_file(direct_url, folder["download_dir"], filename)
+                                time.sleep(15)
     driver.quit()
