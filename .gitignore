@@ -29,5 +29,9 @@ venv.bak/
 #download 
 nas-download/
 
+#wav
+wav/
+
 #mp4 to txt
+text/
 mp4-to-txt/

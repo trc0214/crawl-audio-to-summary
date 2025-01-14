@@ -1,61 +1,45 @@
-import subprocess
-import speech_recognition as sr
 import os
 import tempfile
 from pydub import AudioSegment
+import torch
+from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
 
 def convert_mp4_to_wav(input_file, wav_file):
     AudioSegment.from_file(input_file).export(wav_file, format='wav')
 
-def get_audio_length(audio_file):
-    audio = AudioSegment.from_file(audio_file)
-    return len(audio)
+def wav_to_txt(input_file, output_file, model_id="openai/whisper-large-v3-turbo", device="cuda:0"):
+    device = "cuda:0" if torch.cuda.is_available() else "cpu"
+    torch_dtype = torch.float16 if torch.cuda.is_available() else torch.float32
 
-def split_audio(audio_file, chunk_length_ms=60000):
-    audio = AudioSegment.from_file(audio_file)
-    chunks = [audio[i:i + chunk_length_ms] for i in range(0, len(audio), chunk_length_ms)]
-    return chunks
+    model = AutoModelForSpeechSeq2Seq.from_pretrained(
+        model_id, torch_dtype=torch_dtype, low_cpu_mem_usage=True, use_safetensors=True
+    )
+    model.to(device)
 
-def speech_to_text(audio_chunk, language="en-US"):
-    recognizer = sr.Recognizer()
-    with sr.AudioFile(audio_chunk) as source:
-        audio = recognizer.record(source)
-    try:
-        text = recognizer.recognize_google(audio, language=language)
-        return text
-    except sr.UnknownValueError:
-        return "Speech recognition could not understand audio"
-    except sr.RequestError as e:
-        return f"Could not request results from Google Speech Recognition service; {e}"
+    processor = AutoProcessor.from_pretrained(model_id)
 
-def process_audio_file(audio_file, language, chunk_length_ms=60000):
-    audio_length = get_audio_length(audio_file)
-    if audio_length > chunk_length_ms:
-        chunks = split_audio(audio_file, chunk_length_ms)
-        full_text = ""
-        for i, chunk in enumerate(chunks):
-            chunk_file = f"chunk_{i}.wav"
-            chunk.export(chunk_file, format="wav")
-            text = speech_to_text(chunk_file, language)
-            full_text += text + " "
-            os.remove(chunk_file)
-        return full_text
-    else:
-        return speech_to_text(audio_file, language)
+    pipe = pipeline(
+        "automatic-speech-recognition",
+        model=model,
+        tokenizer=processor.tokenizer,
+        feature_extractor=processor.feature_extractor,
+        torch_dtype=torch_dtype,
+        device=device,
+        return_timestamps=True,
+    )
     
-def mp4_to_txt(input_file, output_file, language):
+    result = pipe(input_file)
+    
+    if not os.path.exists(os.path.dirname(output_file)):
+        os.makedirs(os.path.dirname(output_file))
+    with open(output_file, "w", encoding="utf-8") as f:
+        f.write(result["text"])
+    
+def mp4_to_txt(input_file, output_file):
     with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_wav_file:
-        temp_wav_file.close()
         convert_mp4_to_wav(input_file, temp_wav_file.name)
-        text = process_audio_file(temp_wav_file.name, language)
-        os.remove(temp_wav_file.name)
-        
-        output_dir = os.path.dirname(output_file)
-        if not os.path.exists(output_dir):
-            os.makedirs(output_dir)
-        
-        with open(output_file, 'w', encoding='utf-8') as f:
-            f.write(text)
+        wav_to_txt(temp_wav_file.name, output_file)
+    os.remove(temp_wav_file.name)
 
 if __name__ == "__main__":
     nas_download_folder = {
@@ -68,5 +52,5 @@ if __name__ == "__main__":
                 if file.endswith(".mp4"):
                     input_file = os.path.join(root, file)
                     output_file = os.path.join(paths['download_dir'], file.replace(".mp4", ".txt"))
-                    mp4_to_txt(input_file, output_file, "zh-TW")
+                    mp4_to_txt(input_file, output_file)
                     print(f"Transcript saved to '{output_file}'")
