@@ -1,8 +1,8 @@
 # Title
 
-NAS crawler
-speech recognition
-text summarization
+NAS crawler,
+speech recognition,
+text summarization,
 
 ## Install
 
