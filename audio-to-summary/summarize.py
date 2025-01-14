@@ -39,6 +39,9 @@ if __name__ == "__main__":
         for file in os.listdir(f"{txt_folder}/{folder}"):
             if file.endswith(".txt"):
                 output_folder = f"{summary_folder}/{folder}"
+                if os.path.exists(f"{output_folder}/{file}"):
+                    print(f"File {file} already exists. Skipping...")
+                    continue
                 if not os.path.exists(output_folder):
                     os.makedirs(output_folder)
                 txt_to_summarize(f"{txt_folder}/{folder}/{file}", f"{output_folder}/{file}", azure_endpoint, api_key, api_version, model, ai_theme)
