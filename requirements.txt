@@ -6,3 +6,7 @@ pydub == 0.25.1
 transformers 
 datasets[audio] 
 accelerate
+torch==2.5.0 
+torchvision==0.20.0 
+torchaudio==2.5.0
+openai==1.57.0

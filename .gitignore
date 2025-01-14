@@ -35,3 +35,6 @@ wav/
 #mp4 to txt
 text/
 mp4-to-txt/
+
+#txt to summary
+txt-to-summary/

@@ -42,15 +42,12 @@ def mp4_to_txt(input_file, output_file):
     os.remove(temp_wav_file.name)
 
 if __name__ == "__main__":
-    nas_download_folder = {
-        "nas-download\\python": {'download_dir': 'mp4-to-txt\\python'},
-    }
-
-    for folder, paths in nas_download_folder.items():
-        for root, dirs, files in os.walk(folder):
-            for file in files:
-                if file.endswith(".mp4"):
-                    input_file = os.path.join(root, file)
-                    output_file = os.path.join(paths['download_dir'], file.replace(".mp4", ".txt"))
-                    mp4_to_txt(input_file, output_file)
-                    print(f"Transcript saved to '{output_file}'")
+    
+    mp4_folder = "nas-download"
+    txt_folder = "mp4-to-txt"
+    
+    for folder in os.listdir(mp4_folder):
+        for file in os.listdir(f"{mp4_folder}/{folder}"):
+            if file.endswith(".mp4"):
+                mp4_to_txt(f"{mp4_folder}/{folder}/{file}", f"{txt_folder}/{folder}/{file.replace('.mp4', '.txt')}")
+                print(f"Converted {file} to text.")
