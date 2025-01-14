@@ -112,13 +112,20 @@ if __name__ == "__main__":
     }
 
     for folder in freshman_requirements.values():
-        for date in folder["dates"]:
-            for lesson in range(1, folder["defult_lesson"]):
-                video_id = f"aiA6_{folder['year']}{folder['mounth']}{date}_{lesson}"
-                filename = f"{video_id}.mp4"
-                file_path = os.path.join(folder["download_dir"], filename)
-                
-                if os.path.exists(file_path):
-                    print(f"File {filename} already exists.")
-                else:
-                    print(f"File {filename} does not exist.")
+            for date in folder["dates"]:
+                for lesson in range(1, folder["defult_lesson"]):
+                    video_id = f"aiA6_{date}_{lesson}"
+                    filename = f"{video_id}.mp4"
+                    file_path = os.path.join(folder["download_dir"], filename)
+                    
+                    if os.path.exists(file_path):
+                        print(f"File {filename} already exists. Skipping download.")
+                        continue
+                    
+                    print(f"Downloading {video_id}")
+                    video_url = video_base_url+ folder["folder_name"] + video_id + ".mp4"
+                    direct_url = get_direct_url(driver, video_url, "_html5_video_player")
+                    if direct_url:
+                        download_file(direct_url, folder["download_dir"], filename)
+                        time.sleep(15)
+    driver.quit()
