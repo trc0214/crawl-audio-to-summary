@@ -7,7 +7,7 @@ text summarization,
 ## Install
 
 ```
-Python
+Python= <= 3.13.0
 ffmpeg
 requests == 2.32.3
 selenium == 4.27.1
