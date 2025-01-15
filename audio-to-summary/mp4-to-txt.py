@@ -26,7 +26,6 @@ def wav_to_txt(input_file, output_file, model_id="openai/whisper-large-v3-turbo"
         torch_dtype=torch_dtype,
         device=device,
         return_timestamps=True,
-        logits_processor=[WhisperTimeStampLogitsProcessor()]
     )
     
     result = pipe(input_file)
