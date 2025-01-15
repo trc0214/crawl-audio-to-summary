@@ -2,7 +2,7 @@ import os
 import tempfile
 from pydub import AudioSegment
 import torch
-from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
+from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline, WhisperTimeStampLogitsProcessor
 
 def convert_mp4_to_wav(input_file, wav_file):
     AudioSegment.from_file(input_file).export(wav_file, format='wav')
@@ -26,6 +26,7 @@ def wav_to_txt(input_file, output_file, model_id="openai/whisper-large-v3-turbo"
         torch_dtype=torch_dtype,
         device=device,
         return_timestamps=True,
+        logits_processor=[WhisperTimeStampLogitsProcessor()]
     )
     
     result = pipe(input_file)
@@ -49,5 +50,8 @@ if __name__ == "__main__":
     for folder in os.listdir(mp4_folder):
         for file in os.listdir(f"{mp4_folder}/{folder}"):
             if file.endswith(".mp4"):
+                if os.path.exists(f"{txt_folder}/{folder}/{file.replace('.mp4', '.txt')}"):
+                    print(f"File {file} already exists. Skipping...")
+                    continue
                 mp4_to_txt(f"{mp4_folder}/{folder}/{file}", f"{txt_folder}/{folder}/{file.replace('.mp4', '.txt')}")
                 print(f"Converted {file} to text.")
